@@ -24,7 +24,8 @@ class PizzaStore
      * @param string $type
      * @return Pizza
      */
-    public function orderPizza(string $type):Pizza {
+    public function orderPizza(string $type): Pizza
+    {
         $pizza = $this->factory->createPizza($type);
 
         $pizza->prepare();

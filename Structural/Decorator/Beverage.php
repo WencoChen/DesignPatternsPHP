@@ -2,9 +2,9 @@
 
 namespace DesignPatterns\Structural\Decorator;
 
-interface Beverage {
+interface Beverage
+{
+    public function getDescription(): string;
 
-    public function getDescription():string;
-
-    public function cost():float;
+    public function cost(): float;
 }
