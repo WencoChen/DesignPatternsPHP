@@ -12,8 +12,7 @@ interface Observer
 {
     /**
      * @param Subject $subject
-     * @param object $arg
      */
-    public function update(Subject $subject, object $arg): void;
+    public function update(Subject $subject): void;
 
 }

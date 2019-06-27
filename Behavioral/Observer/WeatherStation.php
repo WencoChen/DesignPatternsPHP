@@ -3,25 +3,34 @@
 
 namespace DesignPatterns\Behavioral\Observer;
 
+use \SplObjectStorage;
+
 /**
  * 气象站对象
- * Class WeatherData
+ * Class WeatherStation
  * @package DesignPatterns\Observer
  */
-class WeatherData implements Subject
+class WeatherStation implements Subject
 {
     private $temperature;
     private $humidity;
     private $pressure;
-    private $observers = [];
+    private $observers;
 
     /**
-     * 注册观察者
-     * @param Observer $o
+     * WeatherStation constructor.
      */
-    public function registerObserver(Observer $o): void
+    public function __construct()
     {
-        $this->observers[] = $o;
+        $this->observers = new SplObjectStorage();
+    }
+
+    /**
+     * @param Observer $observer
+     */
+    public function registerObserver(Observer $observer): void
+    {
+        $this->observers->attach($observer);
     }
 
     /**
@@ -30,9 +39,8 @@ class WeatherData implements Subject
      */
     public function removeObserver(Observer $observer): void
     {
-        $key = array_search($o, $this->observers, true);
-        if ((bool)$key) {
-            unset($this->observers[$key]);
+        if ($this->observers->contains($observer)) {
+            $this->observers->detach($observer);
         }
     }
 
@@ -41,8 +49,8 @@ class WeatherData implements Subject
      */
     public function notifyObservers(): void
     {
-        foreach ($this->observers as $key => $observer) {
-            $observer->update($this->temperature, $this->humidity, $this->pressure);
+        foreach ($this->observers as $observer) {
+            $observer->update($this);
         }
     }
 
@@ -69,7 +77,6 @@ class WeatherData implements Subject
     }
 
     /**
-     * 获取温度值
      * @return float
      */
     public function getTemperature(): float
@@ -78,7 +85,6 @@ class WeatherData implements Subject
     }
 
     /**
-     * 获取湿度值
      * @return float
      */
     public function getHumidity(): float
@@ -87,12 +93,12 @@ class WeatherData implements Subject
     }
 
     /**
-     * 获取压力值
      * @return float
      */
     public function getPressure(): float
     {
         return $this->pressure;
     }
+
 
 }
